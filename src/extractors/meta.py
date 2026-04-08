@@ -1,5 +1,4 @@
-from extractors.base import BaseExtractor
-import re
+from extractors.base import *
 
 class MetaExtractor(BaseExtractor):
 
@@ -16,7 +15,6 @@ class MetaExtractor(BaseExtractor):
                     content = metatag.get("content")
                     pattern = self.normalize_patterns(pattern)
                     for p in pattern:
-                        if not p or (content and re.search(pattern=self.clean_regex(p),string=content)):
+                        if not p or (content and self.safe_search(pattern=self.clean_regex(p),string=content)):
                             self.register_match(technologies= technologies,technology=technology,matches=tag,pattern=p)
-                            break
         return technologies

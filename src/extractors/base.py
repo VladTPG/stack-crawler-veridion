@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import requests
+import re
 from bs4 import BeautifulSoup
 
 class BaseExtractor(ABC):
@@ -33,6 +34,14 @@ class BaseExtractor(ABC):
 
     def normalize_patterns(self, pattern):
         return [pattern] if isinstance(pattern, str) else pattern
+
+    def safe_search(self, pattern, string):
+        if not string:
+            return None
+        try:
+            return re.search(self.clean_regex(pattern), string, re.IGNORECASE)
+        except re.error:
+            return None
 
     @abstractmethod
     def extract(self, response : requests.Response, soup: BeautifulSoup):

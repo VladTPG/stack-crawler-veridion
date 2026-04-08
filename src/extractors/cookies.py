@@ -1,5 +1,4 @@
-from extractors.base import BaseExtractor
-import re
+from extractors.base import *
 
 class CookiesExtractor(BaseExtractor):
     def __init__(self, ruleset):
@@ -14,6 +13,6 @@ class CookiesExtractor(BaseExtractor):
                 if cookie_name in cookies:
                     pattern = self.normalize_patterns(pattern)
                     for p in pattern:
-                        if not p or re.search(pattern=self.clean_regex(p),string=cookies[cookie_name]):
+                        if not p or self.safe_search(pattern=self.clean_regex(p),string=cookies[cookie_name]):
                             self.register_match(technologies=technologies,technology=technology,matches=cookie_name,pattern = self.clean_regex(p))
         return technologies

@@ -1,5 +1,4 @@
-from extractors.base import BaseExtractor
-import re
+from extractors.base import *
 class HeadersExtractor(BaseExtractor):
 
     def __init__(self, ruleset):
@@ -11,11 +10,11 @@ class HeadersExtractor(BaseExtractor):
         technologies ={}
         for technology, fingerprints in self.ruleset.items():
             for header_name, pattern in fingerprints.get("headers",{}).items():
+
                 if header_name in headers:
                     pattern = self.normalize_patterns(pattern)
                     for p in pattern:
-                        if not p or re.search(pattern=self.clean_regex(p),string=headers[header_name]):
+                        if not p or self.safe_search(pattern=self.clean_regex(p),string=headers[header_name]):
 
                             self.register_match(technologies=technologies,technology=technology,matches=header_name,pattern = self.clean_regex(p))
-
         return technologies
