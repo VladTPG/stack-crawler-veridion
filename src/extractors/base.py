@@ -4,8 +4,12 @@ import re
 from bs4 import BeautifulSoup
 
 class BaseExtractor(ABC):
-    def __init__(self,ruleset):
-        self.ruleset = ruleset
+    def __init__(self, ruleset):
+        self.ruleset = {
+            tech: {self.name: fp[self.name]}
+            for tech, fp in ruleset.items()
+            if self.name in fp
+        }
     def clean_regex(self, regex):
         return regex.split("\\;")[0]
 

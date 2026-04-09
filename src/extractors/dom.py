@@ -2,7 +2,7 @@ from extractors.base import *
 
 class DomExtractor(BaseExtractor):
     def __init__(self, ruleset):
-        self.name = "dom_element"
+        self.name = "dom"
         super().__init__(ruleset)
     def extract(self, response, soup):
         technologies = {}
