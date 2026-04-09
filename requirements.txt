@@ -2,6 +2,7 @@ beautifulsoup4==4.14.3
 certifi==2026.2.25
 charset-normalizer==3.4.7
 cramjam==2.11.0
+dnspython==2.8.0
 fastparquet==2026.3.0
 fsspec==2026.3.0
 idna==3.11
