@@ -91,7 +91,8 @@ if __name__ == "__main__":
     total_found = 0
     workers = os.cpu_count()
 
-    with ProcessPoolExecutor(initializer=_worker_init) as executor:
+    output_path = "data/output.jsonl"
+    with ProcessPoolExecutor(initializer=_worker_init) as executor, open(output_path, "a", encoding="utf-8") as out_file:
         futures = {executor.submit(scan, domain): domain for domain in domains}
         for i, future in enumerate(as_completed(futures), 1):
             try:
@@ -99,6 +100,8 @@ if __name__ == "__main__":
                 unique.update(technologies.keys())
                 found = list(technologies.keys())
                 total_found += len(found)
+                out_file.write(json.dumps({"domain": domain, "technologies": technologies}) + "\n")
+                out_file.flush()
                 preview = found[:5]
                 suffix = "..." if len(found) > 5 else ""
                 print(f"[{i:>3}/{len(domains)}] {domain}: {len(found)} techs: {preview}{suffix}", flush=True)
